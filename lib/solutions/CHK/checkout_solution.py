@@ -15,8 +15,16 @@ def prices_offers_dict() -> dict:
 
 def checkout(skus: str) -> int:
     skus_list = skus.split(",")
-    prices_offers = prices_offers_list()
+    prices_offers = prices_offers_dict()
+    total_value = 0
 
     for sku in skus_list:
-        pass
+        if len(sku) == 0 or len(sku) > 1:
+            return -1
+        elif prices_offers.get(sku) is None:
+            return -1
+        else:
+            pass
+
+    return total_value
 
