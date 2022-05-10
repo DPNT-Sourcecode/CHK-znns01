@@ -10,5 +10,3 @@ def compute(x: int, y: int) -> int:
     else:
         raise Exception(f"Unexpected type for x: {x} or y: {y}.")
 
-
-
