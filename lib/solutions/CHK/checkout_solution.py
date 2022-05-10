@@ -21,10 +21,19 @@ def checkout(skus: str) -> int:
     for sku in skus_list:
         if len(sku) == 0 or len(sku) > 1:
             return -1
-        elif prices_offers.get(sku) is None:
-            return -1
+        elif sku in prices_offers.index():
+            item_dict = prices_offers.get(sku)
+
+            if not "offer" in item_dict.index():
+                if not "price" in item_dict.index():
+                    return -1
+
+                total_value =+ item_dict.get("price") 
+            else:
+                pass
         else:
-            pass
+            return -1
 
     return total_value
+
 
