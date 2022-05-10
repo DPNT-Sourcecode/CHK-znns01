@@ -3,4 +3,10 @@
 # noinspection PyUnusedLocal
 # friend_name = unicode string
 def hello(friend_name: str) -> str:
-    return f"Hello, World!"
+    if not isinstance(friend_name, str):
+        raise Exception(
+            f"Unexpected type for {friend_name}."
+            " String type expected.")
+
+    return f"Hello, {friend_name}!"
+
