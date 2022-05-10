@@ -25,15 +25,13 @@ def checkout(skus: str) -> int:
             item_dict = prices_offers.get(sku)
 
             if not "offer" in item_dict.index():
-                if not "price" in item_dict.index():
-                    return -1
-
-                total_value =+ item_dict.get("price") 
+                total_value =+ item_dict.get("price", 0) 
             else:
                 pass
         else:
             return -1
 
     return total_value
+
 
 
