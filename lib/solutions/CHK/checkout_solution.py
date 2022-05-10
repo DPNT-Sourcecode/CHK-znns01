@@ -27,11 +27,16 @@ def checkout(skus: str) -> int:
             if not "offer" in item_dict.index():
                 total_value =+ item_dict.get("price", 0) 
             else:
-                pass
+                item_offer = item_dict.get("offer")
+                item_offer_list = item_offer.split()
+                item_offer_quantity = item_offer_list[0]
+                item_offer_quantity_number = item_offer_quantity[:-1]
+                item_offer_price = item_offer_list[-1]
         else:
             return -1
 
     return total_value
+
 
 
 
