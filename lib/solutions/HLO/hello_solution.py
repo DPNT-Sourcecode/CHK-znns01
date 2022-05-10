@@ -9,4 +9,3 @@ def hello(friend_name: str) -> str:
             " String type expected.")
 
     return f"Hello, {friend_name}!"
-

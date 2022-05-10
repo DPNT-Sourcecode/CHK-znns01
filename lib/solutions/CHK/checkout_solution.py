@@ -20,5 +20,3 @@ def checkout(skus: str) -> int:
     for sku in skus_list:
         pass
 
-
-
