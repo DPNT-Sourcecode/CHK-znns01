@@ -23,18 +23,18 @@ def checkout(skus: str) -> int:
     for sku in skus_list:
         if len(sku) == 0 or len(sku) > 1:
             return -1
-        elif sku not in prices_offers.index():
+        elif sku not in prices_offers.keys():
             return -1
         else:
             item_dict = prices_offers.get(sku)
 
-            if sku not in product_checkout_dict.index():
+            if sku not in product_checkout_dict.keys():
                 product_checkout_dict[sku] = {
                     "quantity": 1,
                     "price": item_dict.get("price"),
                 }
 
-                if "offer" in item_dict.index():
+                if "offer" in item_dict.keys():
                     item_offer = item_dict.get("offer")
                     item_offer_list = item_offer.split()
                     item_offer_quantity = item_offer_list[0]
@@ -48,5 +48,13 @@ def checkout(skus: str) -> int:
             else:
                 product_checkout_dict[sku]["quantity"] += 1 
 
+    for _, product in product_checkout_dict.items():
+        if "offer" in product.keys():
+            pass
+        else:
+            subtotal_value = product.get("quantity") * product.get("price")
+            total_value += subtotal_value
+
     return total_value
+
 
