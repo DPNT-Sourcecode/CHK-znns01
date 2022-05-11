@@ -1,4 +1,4 @@
-
+from decimal import Decimal
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -53,13 +53,16 @@ def checkout(skus: str) -> int:
             product_offer_quantity = product.get("offer").get("quantity")
             product_offer_price = product.get("offer").get("price")
 
-            offer_quantity_result = product.get("quantity") / product_offer_quantity
+            offer_quantity_result = \
+                Decimal(f"{product.get('quantity')}") / Decimal(f"{product_offer_quantity}")
             truncated_offer_quantity_result = int(offer_quantity_result)
 
             if truncated_offer_quantity_result > 0:
-                subtotal_value = truncated_offer_quantity_result * product_offer_price
+                subtotal_value = \
+                    Decimal(f"{truncated_offer_quantity_result}") * Decimal(f"{product_offer_price}")
             else:
-                subtotal_value = product.get("quantity") * product.get("price")
+                subtotal_value = \
+                    Decimal(f"{product.get('quantity')}") * Decimal(f"{product.get('price')}")
 
             total_value += subtotal_value
 
@@ -68,6 +71,3 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return total_value
-
-
-
