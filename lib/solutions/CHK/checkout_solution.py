@@ -67,7 +67,9 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
         else:
-            subtotal_value = product.get("quantity") * product.get("price")
+            subtotal_value = \
+                Decimal(f"product.get('quantity')") * Decimal(f"{product.get('price')}")
             total_value += subtotal_value
 
     return total_value
+
