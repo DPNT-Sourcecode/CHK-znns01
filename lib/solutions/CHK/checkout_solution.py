@@ -64,8 +64,9 @@ def checkout(skus: str) -> int:
                 remainder_offer_quantity_result = \
                     Decimal(f"{product.get('quantity')}") % Decimal(f"{product_offer_quantity}")
                 subtotal_remainder_value = \
-                    Decimal(f"{remainder_offer_quantity_result}") * Decimal((f"{product.get('price')}}")
-                subtotal_value = subtotal_offer_value + subtotal_remainder_value
+                    Decimal(f"{remainder_offer_quantity_result}") * Decimal(f"{product.get('price')}")
+                subtotal_value = \
+                    Decimal(f"{subtotal_offer_value}") + Decimal(f"{subtotal_remainder_value}")
             else:
                 subtotal_value = \
                     Decimal(f"{product.get('quantity')}") * Decimal(f"{product.get('price')}")
@@ -78,5 +79,6 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return total_value
+
 
 
