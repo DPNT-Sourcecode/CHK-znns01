@@ -50,11 +50,24 @@ def checkout(skus: str) -> int:
 
     for _, product in product_checkout_dict.items():
         if "offer" in product.keys():
-            pass
+            product_offer_quantity = product.get("offer").get("quantity")
+            product_offer_price = product.get("offer").get("price")
+
+            offer_quantity_result = product.get("quantity") / product_offer_quantity
+            truncated_offer_quantity_result = int(offer_quantity_result)
+
+            if truncated_offer_quantity_result > 0:
+                subtotal_value = truncated_offer_quantity_result * product_offer_price
+            else:
+                subtotal_value = product.get("quantity") * product.get("price")
+
+            total_value += subtotal_value
+
         else:
             subtotal_value = product.get("quantity") * product.get("price")
             total_value += subtotal_value
 
     return total_value
+
 
 
