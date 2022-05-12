@@ -26,11 +26,16 @@ class Product():
         applied_discount_subtotal = []
 
         for discount in applicable_discounts:
+            applied_discount_value = 0
+
             if isinstance(discount, BundlePriceDiscount):
                 applied_discount_value = discount.rule(self.price, self.quantity)
             elif isinstance(discount, BundleGiftDiscount):
                 applied_discount_value = discount.rule(self.quantity)
-            applied_discount_subtotal.append()
+
+            applied_discount_subtotal.append(applied_discount_value)
+            best_discounted_subtotal = min(applied_discount_subtotal)
+            self.subtotal = best_discounted_subtotal
 
 
 class Discount(ABC):
@@ -174,4 +179,5 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
