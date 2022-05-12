@@ -5,18 +5,59 @@ from decimal import Decimal
 
 @dataclass
 class Receipt():
-    products_list: list
+    products_dict: dict = {}
     total: int
 
     def build_products_list(skus: str):
-        pass
+        stripped_space_skus = skus.replace(" ", "")
+        skus_list = list(stripped_space_skus)
+        prices_offers = prices_offers_dict()
+
+        for sku in skus_list:
+            if len(sku) > 1:
+                raise Exception("Unexpected individual sku length. It has to be of length 1.") 
+            elif sku not in prices_offers.keys():
+                raise Exception("Unexpected sku value. We do not have products with the given sku value.") 
+            else:
+                item_dict = prices_offers.get(sku)
+
+                if sku not in product_checkout_dict.keys():
+                    product_checkout_dict[sku] = Product(
+                        sku=sku,
+                        price=item_dict.get("price"),
+                        quantity= 1
+                    )
+
+                    if "offer" in item_dict.keys():
+                        for item_offer in item_dict.get("offer"):
+                            item_offer_list = item_offer.split()
+                            item_offer_quantity = item_offer_list[0]
+                            item_offer_quantity_number = item_offer_quantity[:-1]
+
+                            stripped_item_offer = item_offer.strip(" ")
+
+                            if stripped_item_offer[-3] == "one" and stripped_item_offer[-1] == "free":   
+                                product_offered = stripped_item_offer[-2]
+
+                                product_checkout_dict[sku].discounts.append(BundleGiftDiscount(
+                                    bundled_product=product_offered,
+                                    price=item_offer_price
+                                ))
+                            else:
+                                item_offer_price = item_offer_list[-1]
+
+                                product_checkout_dict[sku].discount.append(BundlePriceDiscount(
+                                    quantity=item_offer_quantity_number,
+                                    price=item_offer_price
+                                ))
+                else:
+                    product_checkout_dict[sku].quantity += 1 
 
     def calculate_total():
         total_value = 0
 
-        for product in self.products_list:
+        for _, product in self.products_dict.items():
             product.calculate_subtotal()
-
             total_value += product.subtotal
 
         self.total = total_value
@@ -211,3 +252,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
