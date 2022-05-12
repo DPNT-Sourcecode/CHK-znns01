@@ -1,4 +1,8 @@
 from decimal import Decimal
+import locale
+
+locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -99,5 +103,6 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
