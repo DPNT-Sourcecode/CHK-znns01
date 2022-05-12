@@ -14,39 +14,8 @@ def prices_offers_dict() -> dict:
     return prices_offers
 
 
-def calculate_product_offer_subtotal(product: dict):
-    product_offer_quantity = product.get("offer").get("quantity")
-    product_offer_price = product.get("offer").get("price")
-
-    offer_quantity_result = \
-        Decimal(f"{product.get('quantity')}") / Decimal(f"{product_offer_quantity}")
-    truncated_offer_quantity_result = int(offer_quantity_result)
-
-    if truncated_offer_quantity_result > 0:
-        subtotal_offer_value = \
-            Decimal(f"{truncated_offer_quantity_result}") * Decimal(f"{product_offer_price}")
-
-        remainder_offer_quantity_result = \
-            Decimal(f"{product.get('quantity')}") % Decimal(f"{product_offer_quantity}")
-        subtotal_remainder_value = \
-            Decimal(f"{remainder_offer_quantity_result}") * Decimal(f"{product.get('price')}")
-        subtotal_value = \
-            Decimal(f"{subtotal_offer_value}") + Decimal(f"{subtotal_remainder_value}")
-    else:
-        subtotal_value = \
-            Decimal(f"{product.get('quantity')}") * Decimal(f"{product.get('price')}")
-    
-    return subtotal_value
-
-
-def checkout(skus: str) -> int:
-    skus_list = skus.split(",")
-    prices_offers = prices_offers_dict()
-    total_value = 0
+def populate_product_checkout_dict(skus_list: list, prices_offers: dict) -> dict:
     product_checkout_dict = {}
-
-    if len(skus) == 0:
-        return -1
 
     for sku in skus_list:
         if len(sku) > 1:
@@ -76,6 +45,46 @@ def checkout(skus: str) -> int:
             else:
                 product_checkout_dict[sku]["quantity"] += 1 
 
+    return product_checkout_dict
+
+
+def calculate_product_offer_subtotal(product: dict) -> Decimal:
+    product_offer_quantity = product.get("offer").get("quantity")
+    product_offer_price = product.get("offer").get("price")
+
+    offer_quantity_result = \
+        Decimal(f"{product.get('quantity')}") / Decimal(f"{product_offer_quantity}")
+    truncated_offer_quantity_result = int(offer_quantity_result)
+
+    if truncated_offer_quantity_result > 0:
+        subtotal_offer_value = \
+            Decimal(f"{truncated_offer_quantity_result}") * Decimal(f"{product_offer_price}")
+
+        remainder_offer_quantity_result = \
+            Decimal(f"{product.get('quantity')}") % Decimal(f"{product_offer_quantity}")
+        subtotal_remainder_value = \
+            Decimal(f"{remainder_offer_quantity_result}") * Decimal(f"{product.get('price')}")
+        subtotal_value = \
+            Decimal(f"{subtotal_offer_value}") + Decimal(f"{subtotal_remainder_value}")
+    else:
+        subtotal_value = \
+            Decimal(f"{product.get('quantity')}") * Decimal(f"{product.get('price')}")
+    
+    return subtotal_value
+
+
+def checkout(skus: str) -> int:
+    skus_list = skus.split(",")
+    prices_offers = prices_offers_dict()
+    total_value = 0
+
+    if len(skus) == 0:
+        return -1
+
+    product_checkout_dict = populate_product_checkout_dict(skus_list, prices_offers)
+    if product_checkout_dict == -1:
+        return -1
+
     for _, product in product_checkout_dict.items():
         if "offer" in product.keys():
             subtotal_value = calculate_product_offer_subtotal(product)
@@ -87,5 +96,6 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return total_value
+
 
 
