@@ -6,10 +6,11 @@ from decimal import Decimal
 
 def prices_offers_dict() -> dict:
     prices_offers = {
-        "A": {"price": 50, "offer": "3A for 130"},
-        "B": {"price": 30, "offer": "2B for 45"},
+        "A": {"price": 50, "offer": ["3A for 130", "5A for 200"]},
+        "B": {"price": 30, "offer": ["2B for 45"]},
         "C": {"price": 20},
         "D": {"price": 15},
+        "E": {"price": 40, "offer": ["2E get one B free"]}
     }
 
     return prices_offers
@@ -99,3 +100,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
