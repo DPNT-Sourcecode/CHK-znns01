@@ -22,6 +22,30 @@ class Discount(ABC):
         pass
 
 
+class BundlePriceDiscount(Discount):
+    # X A Products for Y
+
+    @property
+    def rule():
+        pass
+
+    @property
+    def condition():
+        pass
+
+
+class BundleGiftDiscount(Discount):
+    # X B Products get one C Product free
+
+    @property
+    def rule():
+        pass
+
+    @property
+    def condition():
+        pass
+
+
 # noinspection PyUnusedLocal
 # skus = unicode string
 
@@ -127,5 +151,6 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
