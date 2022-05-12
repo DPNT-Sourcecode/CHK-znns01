@@ -17,7 +17,7 @@ class Product():
             return applicable_discounts
         else:
             for discount in self.discounts:
-                if discount.condition(self.price, self.quantity) is True:
+                if discount.condition(self.quantity) is True:
                     applicable_discounts.append(discount)
 
         return applicable_discounts
@@ -54,25 +54,28 @@ class Discount(ABC):
         pass
 
     @property
-    def condition(self, product_price: int, product_quantity: int):
+    def condition(self, product_quantity: int):
         pass
 
 
 class BundlePriceDiscount(Discount):
     # X A Products for Y
+    quantity: int
+    price: int
 
     @property
     def rule(self, product_quantity: int, applied_price: int):
         pass
 
     @property
-    def condition(self, product_price: int, product_quantity: int):
-        pass
+    def condition(self, product_quantity: int) -> bool:
+        return product_quantity >= self.quantity
 
 
 class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
-    bundled_product = Product
+    quantity: int
+    bundled_product: Product
 
     @property
     def rule(self, product_quantity: int):
@@ -80,8 +83,8 @@ class BundleGiftDiscount(Discount):
         pass
 
     @property
-    def condition(self, product_price: int, product_quantity: int):
-        pass
+    def condition(self, product_quantity: int) -> bool:
+        return product_quantity >= self.quantity
 
 
 # noinspection PyUnusedLocal
@@ -189,6 +192,7 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
 
