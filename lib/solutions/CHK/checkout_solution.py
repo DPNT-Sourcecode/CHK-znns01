@@ -20,6 +20,7 @@ def populate_product_checkout_dict(skus: str) -> dict:
     product_checkout_dict = {}
 
     for sku in skus_list:
+        print(f"sku length: {len(sku)}")
         if len(sku) > 1:
             return -1
         elif sku not in prices_offers.keys():
@@ -97,3 +98,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
