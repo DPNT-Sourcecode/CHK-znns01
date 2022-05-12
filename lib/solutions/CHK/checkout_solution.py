@@ -11,14 +11,28 @@ class Product():
     discounts: list[Discount]
     subtotal: Decimal
 
+    def applicable_discounts(self) -> list:
+        applicable_discounts = []
+        if not self.discounts:
+            return applicable_discounts
+        else:
+            for discount in self.discounts:
+                if discount.condition(self.price, self.quantity) is True:
+                    applicable_discounts.append(discount)
+
+        return applicable_discounts
+
+    def apply_applicable_discounts(self, applicable_discounts: list):
+        pass
+
 
 class Discount(ABC):
     @property
-    def rule():
+    def rule(self):
         pass
 
     @property
-    def condition():
+    def condition(self, product_price: int, product_quantity: int):
         pass
 
 
@@ -26,11 +40,11 @@ class BundlePriceDiscount(Discount):
     # X A Products for Y
 
     @property
-    def rule():
+    def rule(self):
         pass
 
     @property
-    def condition():
+    def condition(self, product_price: int, product_quantity: int):
         pass
 
 
@@ -38,11 +52,11 @@ class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
 
     @property
-    def rule():
+    def rule(self):
         pass
 
     @property
-    def condition():
+    def condition(self, product_price: int, product_quantity: int):
         pass
 
 
@@ -151,6 +165,7 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
 
