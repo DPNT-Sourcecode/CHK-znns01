@@ -16,6 +16,3 @@ class TestCkeckout():
 
     def test_checkout_valid_with_multiple_occurence_offers_and_remainder(self):
         assert checkout_solution.checkout("ABABABBA") == 270
-
-
-
