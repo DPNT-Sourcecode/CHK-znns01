@@ -1,4 +1,18 @@
+from dataclasses import dataclass
 from decimal import Decimal
+
+
+@dataclass
+class Product():
+    sku: str
+    price: int
+    quantity: int
+    discount: Discount
+    subtotal: Decimal
+
+
+class Discount():
+    pass
 
 
 # noinspection PyUnusedLocal
@@ -106,3 +120,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
