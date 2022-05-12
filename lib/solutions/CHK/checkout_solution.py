@@ -40,7 +40,7 @@ class BundlePriceDiscount(Discount):
     # X A Products for Y
 
     @property
-    def rule(self, product_quantity: int):
+    def rule(self, product_quantity: int, applied_price: int):
         pass
 
     @property
@@ -52,7 +52,7 @@ class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
 
     @property
-    def rule(self, product_price: int, product_quantity: int, bundled_product: Product):
+    def rule(self, product_quantity: int, bundled_product_price: int):
         pass
 
     @property
@@ -165,8 +165,3 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
-
-
-
-
-
