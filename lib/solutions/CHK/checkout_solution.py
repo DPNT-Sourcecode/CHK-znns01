@@ -23,7 +23,14 @@ class Product():
         return applicable_discounts
 
     def apply_applicable_discounts(self, applicable_discounts: list):
-        pass
+        applied_discount_subtotal = []
+
+        for discount in applicable_discounts:
+            if isinstance(discount, BundlePriceDiscount):
+                applied_discount_value = discount.rule(self.price, self.quantity)
+            elif isinstance(discount, BundleGiftDiscount):
+                applied_discount_value = discount.rule(self.quantity)
+            applied_discount_subtotal.append()
 
 
 class Discount(ABC):
@@ -50,9 +57,11 @@ class BundlePriceDiscount(Discount):
 
 class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
+    bundled_product = Product
 
     @property
-    def rule(self, product_quantity: int, bundled_product_price: int):
+    def rule(self, product_quantity: int):
+        bundled_product_price = self.bundled_product.price
         pass
 
     @property
@@ -165,3 +174,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
