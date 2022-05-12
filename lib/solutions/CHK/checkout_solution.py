@@ -4,6 +4,25 @@ from decimal import Decimal
 
 
 @dataclass
+class Receipt():
+    products_list: list
+    total: int
+
+    def build_products_list(skus: str):
+        pass
+
+    def calculate_total():
+        total_value = 0
+
+        for product in self.products_list:
+            product.calculate_subtotal()
+
+            total_value += product.subtotal
+
+        self.total = total_value
+
+
+@dataclass
 class Product():
     sku: str
     price: int
@@ -192,3 +211,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
