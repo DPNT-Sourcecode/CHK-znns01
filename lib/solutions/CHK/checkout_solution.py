@@ -14,7 +14,9 @@ def prices_offers_dict() -> dict:
     return prices_offers
 
 
-def populate_product_checkout_dict(skus_list: list, prices_offers: dict) -> dict:
+def populate_product_checkout_dict(skus: str) -> dict:
+    skus_list = skus.split(",")
+    prices_offers = prices_offers_dict()
     product_checkout_dict = {}
 
     for sku in skus_list:
@@ -74,14 +76,13 @@ def calculate_product_offer_subtotal(product: dict) -> Decimal:
 
 
 def checkout(skus: str) -> int:
-    skus_list = skus.split(",")
-    prices_offers = prices_offers_dict()
     total_value = 0
 
     if len(skus) == 0:
         return -1
 
-    product_checkout_dict = populate_product_checkout_dict(skus_list, prices_offers)
+    product_checkout_dict = populate_product_checkout_dict(skus)
+
     if product_checkout_dict == -1:
         return -1
 
@@ -96,6 +97,7 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return total_value
+
 
 
 
