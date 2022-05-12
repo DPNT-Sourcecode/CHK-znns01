@@ -37,16 +37,22 @@ def populate_product_checkout_dict(skus: str) -> dict:
                 }
 
                 if "offer" in item_dict.keys():
-                    item_offer = item_dict.get("offer")
-                    item_offer_list = item_offer.split()
-                    item_offer_quantity = item_offer_list[0]
-                    item_offer_quantity_number = item_offer_quantity[:-1]
-                    item_offer_price = item_offer_list[-1]
+                    for item_offer in item_dict.get("offer"):
+                        item_offer_list = item_offer.split()
+                        item_offer_quantity = item_offer_list[0]
+                        item_offer_quantity_number = item_offer_quantity[:-1]
+                        item_offer_price = item_offer_list[-1]
 
-                    product_checkout_dict[sku]["offer"] = {
-                        "quantity": item_offer_quantity_number,
-                        "price": item_offer_price
-                    }
+                        if "offer" not in product_checkout_dict[sku].keys():
+                            product_checkout_dict[sku]["offer"] = [{
+                                "quantity": item_offer_quantity_number,
+                                "price": item_offer_price
+                            }]
+                        else:
+                            product_checkout_dict[sku]["offer"].append({
+                                "quantity": item_offer_quantity_number,
+                                "price": item_offer_price
+                            })
             else:
                 product_checkout_dict[sku]["quantity"] += 1 
 
@@ -100,4 +106,5 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
