@@ -17,7 +17,7 @@ def prices_offers_dict() -> dict:
 
 def populate_product_checkout_dict(skus: str) -> dict:
     stripped_space_skus = skus.replace(" ", "")
-    skus_list = stripped_space_skus.split(",")
+    skus_list = stripped_space_skus.split()
     prices_offers = prices_offers_dict()
     product_checkout_dict = {}
 
@@ -81,7 +81,7 @@ def checkout(skus: str) -> int:
     total_value = 0
 
     if len(skus) == 0:
-        return -1
+        return total_value
 
     product_checkout_dict = populate_product_checkout_dict(skus)
 
@@ -99,6 +99,7 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
 
