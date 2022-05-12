@@ -8,7 +8,7 @@ class Product():
     sku: str
     price: int
     quantity: int
-    discounts: list[Discount]
+    discounts: list
     subtotal: Decimal
 
     def applicable_discounts(self) -> list:
@@ -192,7 +192,3 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
-
-
-
-
