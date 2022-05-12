@@ -35,7 +35,17 @@ class Product():
 
             applied_discount_subtotal.append(applied_discount_value)
             best_discounted_subtotal = min(applied_discount_subtotal)
-            self.subtotal = best_discounted_subtotal
+        
+        return best_discounted_subtotal
+
+    def calculate_subtotal(self):
+        available_discounts = self.applicable_discounts()
+        subtotal_value = 0
+
+        if len(available_discounts) > 0:
+            self.subtotal = self.apply_applicable_discounts(available_discounts)
+        else:
+            self.subtotal = self.price * self.quantity
 
 
 class Discount(ABC):
@@ -179,5 +189,6 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
