@@ -1,3 +1,4 @@
+from abc import ABC
 from dataclasses import dataclass
 from decimal import Decimal
 
@@ -7,12 +8,18 @@ class Product():
     sku: str
     price: int
     quantity: int
-    discount: Discount
+    discounts: list[Discount]
     subtotal: Decimal
 
 
-class Discount():
-    pass
+class Discount(ABC):
+    @property
+    def rule():
+        pass
+
+    @property
+    def condition():
+        pass
 
 
 # noinspection PyUnusedLocal
@@ -120,4 +127,5 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
