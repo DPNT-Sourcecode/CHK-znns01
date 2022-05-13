@@ -16,3 +16,9 @@ class TestCkeckout():
 
     def test_checkout_valid_with_multiple_occurence_offers_and_remainder(self):
         assert checkout_solution.checkout("ABABABBA") == 270
+
+    def test_checkout_valid_with_second_discount(self):
+        assert checkout_solution.checkout("ABABABBAA") == 290
+
+    def test_checkout_valid_with_gift_discount(self):
+        assert checkout_solution.checkout("ABABAEE") == 225
