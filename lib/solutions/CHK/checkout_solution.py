@@ -5,8 +5,8 @@ from decimal import Decimal
 
 @dataclass
 class Receipt():
-    products_dict: dict
-    total: int
+    products_dict = None
+    total: int = 0
 
     def build_products_list(self, skus: str):
         stripped_space_skus = skus.replace(" ", "")
@@ -204,3 +204,4 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
