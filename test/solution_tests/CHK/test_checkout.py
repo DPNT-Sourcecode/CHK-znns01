@@ -22,3 +22,7 @@ class TestCheckout():
 
     def test_checkout_valid_with_gift_discount(self):
         assert checkout_solution.checkout("ABABAEE") == 225
+
+    def test_checkout_valid_without_gift_discount(self):
+        assert checkout_solution.checkout("EE") == 80
+
