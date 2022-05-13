@@ -164,10 +164,10 @@ class BundleGiftDiscount(Discount):
 
             if truncated_offer_quantity_result >= product_quantity: 
                 applied_discount =\
-                    Decimal(str(-truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
+                    Decimal(str(truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
             else:
                 applied_discount = \
-                    Decimal(str(-truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
+                    Decimal(str(truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
 
         discounted_price = \
             Decimal(str(product_quantity)) * Decimal(str(product_price)) - Decimal(str(applied_discount))
@@ -208,6 +208,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
