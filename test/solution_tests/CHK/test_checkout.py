@@ -1,7 +1,7 @@
 from solutions.CHK import checkout_solution
 
 
-class TestCkeckout():
+class TestCheckout():
     def test_checkout_invalid(self):
         assert checkout_solution.checkout("") == 0
 

@@ -208,4 +208,3 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
-
