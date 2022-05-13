@@ -5,7 +5,7 @@ from decimal import Decimal
 
 @dataclass
 class Receipt():
-    products_dict: dict = {}
+    products_dict: dict
     total: int
 
     def build_products_list(self, skus: str):
@@ -265,19 +265,14 @@ def checkout(skus: str) -> int:
     if len(skus) == 0:
         return total_value
 
-    product_checkout_dict = populate_product_checkout_dict(skus)
+    receipt = Receipt()
 
-    if product_checkout_dict == -1:
+    try:
+        receipt.build_products_list(skus)
+    except Exception:
         return -1
 
-    for _, product in product_checkout_dict.items():
-        if "offer" in product.keys():
-            subtotal_value = calculate_product_offer_subtotal(product)
-            total_value += subtotal_value
+    receipt.calculate_total()
 
-        else:
-            subtotal_value = \
-                Decimal(str(product.get("quantity"))) * Decimal(str(product.get("price")))
-            total_value += subtotal_value
+    return int(receipt.total)
 
-    return int(total_value)
