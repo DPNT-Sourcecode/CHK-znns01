@@ -118,6 +118,7 @@ class Discount(ABC):
         pass
 
 
+@dataclass
 class BundlePriceDiscount(Discount):
     # X A Products for Y
     quantity: int
@@ -148,10 +149,11 @@ class BundlePriceDiscount(Discount):
         return product_quantity >= self.quantity
 
 
+@dataclass
 class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
-    quantity: int
     bundled_product_sku: str
+    quantity: int
 
     def rule(self, product_quantity: int, product_price, products_dict: dict) -> Decimal:
         bundled_product_price = self.products_dict[bundled_product_sku].price
@@ -207,6 +209,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
