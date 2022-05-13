@@ -155,10 +155,10 @@ class BundleGiftDiscount(Discount):
     quantity: int
 
     def rule(self, product_quantity: int, product_price, products_dict: dict) -> Decimal:
-        bundled_product_price = products_dict[self.bundled_product_sku].price
         applied_discount = 0
 
         if self.bundled_product_sku in products_dict.keys():
+            bundled_product_price = products_dict[self.bundled_product_sku].price
             offer_quantity_result = Decimal(str(product_quantity)) / Decimal(str(self.quantity))
             truncated_offer_quantity_result = int(offer_quantity_result)
 
@@ -208,6 +208,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
