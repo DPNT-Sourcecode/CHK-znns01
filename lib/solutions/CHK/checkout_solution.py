@@ -142,11 +142,12 @@ class BundleGiftDiscount(Discount):
             product_divisor = product_quantity % quantity
 
             if product_divisor >= product_quantity: 
-                applied_discount = -product_quantity * bundled_product_price
+                applied_discount = Decimal(str(-product_quantity)) * Decimal(str(bundled_product_price))
             else:
-                applied_discount = -product_divisor * bundled_product_price
+                applied_discount = Decimal(str(-product_divisor)) * Decimal(str(bundled_product_price))
 
-        discounted_price = product_quantity * product_price - applied_discount
+        discounted_price = Decimal(str(product_quantity)) * Decimal(str(product_price)) \
+            - Dedcimal(str(applied_discount))
 
         return discounted_price
 
@@ -260,4 +261,5 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
