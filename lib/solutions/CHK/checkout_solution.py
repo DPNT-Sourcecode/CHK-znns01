@@ -281,7 +281,3 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
-
-
-
-
