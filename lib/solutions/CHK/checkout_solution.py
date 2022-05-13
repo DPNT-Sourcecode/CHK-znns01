@@ -36,10 +36,8 @@ class Receipt():
                             item_offer_quantity = item_offer_list[0]
                             item_offer_quantity_number = item_offer_quantity[:-1]
 
-                            stripped_item_offer = item_offer.strip(" ")
-
-                            if stripped_item_offer[-3] == "one" and stripped_item_offer[-1] == "free":   
-                                product_offered_sku = stripped_item_offer[-2]
+                            if item_offer_list[-3] == "one" and item_offer_list[-1] == "free":   
+                                product_offered_sku = item_offer_list[-2]
 
                                 self.products_dict[sku].discounts.append(BundleGiftDiscount(
                                     bundled_product_sku=product_offered_sku,
@@ -50,7 +48,7 @@ class Receipt():
 
                                 self.products_dict[sku].discounts.append(BundlePriceDiscount(
                                     quantity=int(item_offer_quantity_number),
-                                    price=int(item_offer_price)
+                                    price=Decimal(item_offer_price)
                                 ))
                 else:
                     self.products_dict[sku].quantity += 1 
@@ -156,7 +154,7 @@ class BundleGiftDiscount(Discount):
     quantity: int
 
     def rule(self, product_quantity: int, product_price, products_dict: dict) -> Decimal:
-        bundled_product_price = self.products_dict[bundled_product_sku].price
+        bundled_product_price = products_dict[self.bundled_product_sku].price
         applied_discount = 0
 
         if self.bundled_product_sku in products_dict.keys():
@@ -209,6 +207,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
