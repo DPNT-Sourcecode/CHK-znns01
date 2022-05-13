@@ -1,6 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 from decimal import Decimal
+import logging
 
 
 @dataclass
@@ -198,10 +199,12 @@ def checkout(skus: str) -> int:
 
     try:
         receipt.build_products_list(skus)
-    except Exception:
+    except Exception as e:
+        logging.exception(f"Exception occured: {e}")
         return -1
 
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
