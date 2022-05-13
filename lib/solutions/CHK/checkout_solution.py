@@ -143,8 +143,9 @@ class BundleGiftDiscount(Discount):
         pass
 
     @property
-    def condition(self, product_quantity: int) -> bool:
-        return product_quantity >= self.quantity
+    def condition(self, product_quantity: int, items_dict: dict) -> bool:
+        is_availabe = product_quantity >= self.quantity and bundled_product.sku in items_dict.keys()
+        return is_available
 
 
 # noinspection PyUnusedLocal
@@ -252,4 +253,5 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
