@@ -8,7 +8,7 @@ class Receipt():
     products_dict: dict = {}
     total: int
 
-    def build_products_list(skus: str):
+    def build_products_list(self, skus: str):
         stripped_space_skus = skus.replace(" ", "")
         skus_list = list(stripped_space_skus)
         prices_offers = prices_offers_dict()
@@ -53,11 +53,11 @@ class Receipt():
                 else:
                     product_checkout_dict[sku].quantity += 1 
 
-    def calculate_total():
+    def calculate_total(self):
         total_value = 0
 
         for _, product in self.products_dict.items():
-            product.calculate_subtotal()
+            product.calculate_subtotal(self.products_dict)
             total_value += product.subtotal
 
         self.total = total_value
@@ -71,7 +71,7 @@ class Product():
     discounts: list
     subtotal: Decimal
 
-    def applicable_discounts(self) -> list:
+    def applicable_discounts(self, products_dict) -> list:
         applicable_discounts = []
         if not self.discounts:
             return applicable_discounts
@@ -82,7 +82,7 @@ class Product():
 
         return applicable_discounts
 
-    def apply_applicable_discounts(self, applicable_discounts: list):
+    def apply_applicable_discounts(self, applicable_discounts: list, products_dict):
         applied_discount_subtotal = []
 
         for discount in applicable_discounts:
@@ -91,19 +91,19 @@ class Product():
             if isinstance(discount, BundlePriceDiscount):
                 applied_discount_value = discount.rule(self.price, self.quantity)
             elif isinstance(discount, BundleGiftDiscount):
-                applied_discount_value = discount.rule(self.quantity)
+                applied_discount_value = discount.rule(self.quantity, products_dict)
 
             applied_discount_subtotal.append(applied_discount_value)
             best_discounted_subtotal = min(applied_discount_subtotal)
         
         return best_discounted_subtotal
 
-    def calculate_subtotal(self):
-        available_discounts = self.applicable_discounts()
+    def calculate_subtotal(self, products_dict):
+        available_discounts = self.applicable_discounts(products_dict)
         subtotal_value = 0
 
         if len(available_discounts) > 0:
-            self.subtotal = self.apply_applicable_discounts(available_discounts)
+            self.subtotal = self.apply_applicable_discounts(available_discounts, products_dict)
         else:
             self.subtotal = self.price * self.quantity
 
@@ -138,9 +138,11 @@ class BundleGiftDiscount(Discount):
     bundled_product: Product
 
     @property
-    def rule(self, product_quantity: int):
+    def rule(self, product_quantity: int, products_dict: dict):
         bundled_product_price = self.bundled_product.price
-        pass
+
+        if self.bundled_product.sku in products_dict.keys():
+            pass
 
     @property
     def condition(self, product_quantity: int, items_dict: dict) -> bool:
@@ -253,5 +255,3 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
-
-
