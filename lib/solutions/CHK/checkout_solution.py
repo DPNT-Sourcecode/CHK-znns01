@@ -5,13 +5,8 @@ from decimal import Decimal
 import logging
 
 
-@dataclass
 class Receipt():
-    products_dict = defaultdict()
-    total: int = 0
-
-
-    def __init__(self, products_dict: dict, total: int):
+    def __init__(self, products_dict: dict = {}, total: int = 0):
         self.products_dict = products_dict
         self.total = total
 
@@ -213,6 +208,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
