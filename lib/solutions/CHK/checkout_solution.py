@@ -1,4 +1,5 @@
 from abc import ABC
+from collections import defaultdict
 from dataclasses import dataclass, field
 from decimal import Decimal
 import logging
@@ -6,7 +7,7 @@ import logging
 
 @dataclass
 class Receipt():
-    products_dict = field(default_factory=dict)
+    products_dict = defaultdict()
     total: int = 0
 
     def build_products_list(self, skus: str):
@@ -93,7 +94,8 @@ class Product():
                 applied_discount_value = discount.rule(self.quantity, self.price, products_dict)
 
             applied_discount_subtotal.append(applied_discount_value)
-            best_discounted_subtotal = min(applied_discount_subtotal)
+
+        best_discounted_subtotal = min(applied_discount_subtotal)
         
         return best_discounted_subtotal
 
@@ -104,7 +106,7 @@ class Product():
         if len(available_discounts) > 0:
             self.subtotal = self.apply_applicable_discounts(available_discounts, products_dict)
         else:
-            self.subtotal = self.price * self.quantity
+            self.subtotal = Decimal(str(self.price)) * Decimal(str(self.quantity))
 
 
 class Discount(ABC):
@@ -206,3 +208,4 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
