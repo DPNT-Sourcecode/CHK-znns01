@@ -48,7 +48,7 @@ class Receipt():
                             else:
                                 item_offer_price = item_offer_list[-1]
 
-                                self.products_dict[sku].discount.append(BundlePriceDiscount(
+                                self.products_dict[sku].discounts.append(BundlePriceDiscount(
                                     quantity=item_offer_quantity_number,
                                     price=item_offer_price
                                 ))
@@ -207,6 +207,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
