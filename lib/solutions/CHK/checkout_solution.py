@@ -5,7 +5,7 @@ from decimal import Decimal
 import logging
 
 
-@dataclass
+@dataclass(init=True)
 class Receipt():
     products_dict = defaultdict()
     total: int = 0
@@ -197,7 +197,7 @@ def checkout(skus: str) -> int:
     if len(skus) == 0:
         return 0
 
-    receipt = Receipt()
+    receipt = Receipt(products_dict={}, total=0)
 
     try:
         receipt.build_products_list(skus)
@@ -208,4 +208,5 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
