@@ -27,7 +27,7 @@ class Receipt():
                     self.products_dict[sku] = Product(
                         sku=sku,
                         price=item_dict.get("price"),
-                        quantity= 1
+                        quantity=1
                     )
 
                     if "offer" in item_dict.keys():
@@ -208,3 +208,4 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
