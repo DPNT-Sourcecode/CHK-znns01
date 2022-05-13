@@ -1,12 +1,13 @@
 from abc import ABC
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import dataclass, field
 from decimal import Decimal
 import logging
 
 
 @dataclass
 class Receipt():
-    products_dict = {}
+    products_dict = defaultdict()
     total: int = 0
 
     def build_products_list(self, skus: str):
@@ -69,8 +70,8 @@ class Product():
     sku: str
     price: int
     quantity: int
-    discounts: list
-    subtotal: Decimal
+    discounts: list = field(default_factory=list)
+    subtotal: Decimal = 0
 
     def applicable_discounts(self, products_dict) -> list:
         applicable_discounts = []
@@ -206,6 +207,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
