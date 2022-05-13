@@ -1,5 +1,4 @@
 from abc import ABC
-from collections import defaultdict
 from dataclasses import dataclass, field
 from decimal import Decimal
 import logging
@@ -7,7 +6,7 @@ import logging
 
 @dataclass
 class Receipt():
-    products_dict = defaultdict()
+    products_dict = field(default_factory=dict)
     total: int = 0
 
     def build_products_list(self, skus: str):
@@ -207,6 +206,7 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
 
