@@ -6,7 +6,7 @@ import logging
 
 @dataclass
 class Receipt():
-    products_dict = None
+    products_dict = {}
     total: int = 0
 
     def build_products_list(self, skus: str):
@@ -22,8 +22,8 @@ class Receipt():
             else:
                 item_dict = prices_offers.get(sku)
 
-                if sku not in product_checkout_dict.keys():
-                    product_checkout_dict[sku] = Product(
+                if sku not in self.products_dict.keys():
+                    self.products_dict[sku] = Product(
                         sku=sku,
                         price=item_dict.get("price"),
                         quantity= 1
@@ -40,19 +40,19 @@ class Receipt():
                             if stripped_item_offer[-3] == "one" and stripped_item_offer[-1] == "free":   
                                 product_offered_sku = stripped_item_offer[-2]
 
-                                product_checkout_dict[sku].discounts.append(BundleGiftDiscount(
+                                self.products_dict[sku].discounts.append(BundleGiftDiscount(
                                     bundled_product_sku=product_offered_sku,
                                     quantity=item_offer_quantity_number
                                 ))
                             else:
                                 item_offer_price = item_offer_list[-1]
 
-                                product_checkout_dict[sku].discount.append(BundlePriceDiscount(
+                                self.products_dict[sku].discount.append(BundlePriceDiscount(
                                     quantity=item_offer_quantity_number,
                                     price=item_offer_price
                                 ))
                 else:
-                    product_checkout_dict[sku].quantity += 1 
+                    self.products_dict[sku].quantity += 1 
 
     def calculate_total(self):
         total_value = 0
@@ -206,5 +206,6 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
