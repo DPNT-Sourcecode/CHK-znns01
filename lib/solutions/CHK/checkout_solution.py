@@ -5,10 +5,15 @@ from decimal import Decimal
 import logging
 
 
-@dataclass(init=True)
+@dataclass
 class Receipt():
     products_dict = defaultdict()
     total: int = 0
+
+
+    def __init__(self, products_dict: dict, total: int):
+        self.products_dict = products_dict
+        self.total = total
 
     def build_products_list(self, skus: str):
         stripped_space_skus = skus.replace(" ", "")
@@ -208,5 +213,6 @@ def checkout(skus: str) -> int:
     receipt.calculate_total()
 
     return int(receipt.total)
+
 
 
