@@ -121,8 +121,26 @@ class BundlePriceDiscount(Discount):
     quantity: int
     price: int
 
-    def rule(self, product_quantity: int, product_price: int):
-        pass
+    def rule(self, product_quantity: int, product_price: int) -> Decimal:
+        offer_quantity_result = \
+            Decimal(str(product_quantity)) / Decimal(str(self.quantity))
+        truncated_offer_quantity_result = int(offer_quantity_result)
+
+        if truncated_offer_quantity_result > 0:
+            subtotal_offer_value = \
+                Decimal(str(truncated_offer_quantity_result)) * Decimal(str(self.price))
+
+            remainder_offer_quantity_result = \
+                Decimal(str(product_quantity)) % Decimal(str(self.quantity))
+            subtotal_remainder_value = \
+                Decimal(str(remainder_offer_quantity_result)) * Decimal(str(product_price))
+            subtotal_value = \
+                Decimal(str(subtotal_offer_value)) + Decimal(str(subtotal_remainder_value))
+        else:
+            subtotal_value = \
+                Decimal(str(product_quantity)) * Decimal(str(product_price))
+        
+        return subtotal_value
 
     def condition(self, product_quantity: int) -> bool:
         return product_quantity >= self.quantity
@@ -134,20 +152,23 @@ class BundleGiftDiscount(Discount):
     price: int
     bundled_product: Product
 
-    def rule(self, product_quantity: int, product_price, products_dict: dict):
+    def rule(self, product_quantity: int, product_price, products_dict: dict) -> Decimal:
         bundled_product_price = self.bundled_product.price
         applied_discount = 0
 
         if self.bundled_product.sku in products_dict.keys():
-            product_divisor = product_quantity % quantity
+            offer_quantity_result = Decimal(str(product_quantity)) / Decimal(str(quantity))
+            truncated_offer_quantity_result = int(offer_quantity_result)
 
-            if product_divisor >= product_quantity: 
-                applied_discount = Decimal(str(-product_quantity)) * Decimal(str(bundled_product_price))
+            if truncated_offer_quantity_result >= product_quantity: 
+                applied_discount =\
+                    Decimal(str(-truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
             else:
-                applied_discount = Decimal(str(-product_divisor)) * Decimal(str(bundled_product_price))
+                applied_discount = \
+                    Decimal(str(-truncated_offer_quantity_result)) * Decimal(str(bundled_product_price))
 
-        discounted_price = Decimal(str(product_quantity)) * Decimal(str(product_price)) \
-            - Dedcimal(str(applied_discount))
+        discounted_price = \
+            Decimal(str(product_quantity)) * Decimal(str(product_price)) - Dedcimal(str(applied_discount))
 
         return discounted_price
 
@@ -260,6 +281,7 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
 
 
 
