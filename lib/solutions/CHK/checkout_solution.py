@@ -89,9 +89,9 @@ class Product():
             applied_discount_value = 0
 
             if isinstance(discount, BundlePriceDiscount):
-                applied_discount_value = discount.rule(self.price, self.quantity)
+                applied_discount_value = discount.rule(self.quantity, self.price)
             elif isinstance(discount, BundleGiftDiscount):
-                applied_discount_value = discount.rule(self.quantity, products_dict)
+                applied_discount_value = discount.rule(self.quantity, self.price, products_dict)
 
             applied_discount_subtotal.append(applied_discount_value)
             best_discounted_subtotal = min(applied_discount_subtotal)
@@ -109,11 +109,9 @@ class Product():
 
 
 class Discount(ABC):
-    @property
     def rule(self):
         pass
 
-    @property
     def condition(self, product_quantity: int):
         pass
 
@@ -123,11 +121,9 @@ class BundlePriceDiscount(Discount):
     quantity: int
     price: int
 
-    @property
-    def rule(self, product_quantity: int, applied_price: int):
+    def rule(self, product_quantity: int, product_price: int):
         pass
 
-    @property
     def condition(self, product_quantity: int) -> bool:
         return product_quantity >= self.quantity
 
@@ -135,16 +131,25 @@ class BundlePriceDiscount(Discount):
 class BundleGiftDiscount(Discount):
     # X B Products get one C Product free
     quantity: int
+    price: int
     bundled_product: Product
 
-    @property
-    def rule(self, product_quantity: int, products_dict: dict):
+    def rule(self, product_quantity: int, product_price, products_dict: dict):
         bundled_product_price = self.bundled_product.price
+        applied_discount = 0
 
         if self.bundled_product.sku in products_dict.keys():
-            pass
+            product_divisor = product_quantity % quantity
 
-    @property
+            if product_divisor >= product_quantity: 
+                applied_discount = -product_quantity * bundled_product_price
+            else:
+                applied_discount = -product_divisor * bundled_product_price
+
+        discounted_price = product_quantity * product_price - applied_discount
+
+        return discounted_price
+
     def condition(self, product_quantity: int, items_dict: dict) -> bool:
         is_availabe = product_quantity >= self.quantity and bundled_product.sku in items_dict.keys()
         return is_available
@@ -255,3 +260,4 @@ def checkout(skus: str) -> int:
             total_value += subtotal_value
 
     return int(total_value)
+
